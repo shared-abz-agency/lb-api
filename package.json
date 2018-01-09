@@ -1,0 +1,39 @@
+{
+  "name": "loadBalancerApi",
+  "main": "api.js",
+  "engines": {
+    "node": "8.9.0",
+    "npm": "5.6.0"
+  },
+  "scripts": {
+    "start": "node ./api.js",
+    "start:docker": "pm2-docker api.js --name \"api\"",
+    "downloadMaxmind": "node ./crons/update.maxmind.js",
+    "cron:clean": "node crons/clean.js",
+    "cron:countries_clean": "node crons/clean.countries.js",
+    "test": "mocha --require babel-core/register --timeout 30000 --exit ./tests/*"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "chai": "^4.1.2",
+    "cluster": "^0.7.7",
+    "co": "^4.6.0",
+    "compare-versions": "^3.0.0",
+    "compression": "^1.6.2",
+    "finalhandler": "^0.4.1",
+    "maxmind-db-reader": "^0.2.1",
+    "memored": "^0.1.0",
+    "mocha": "^4.0.1",
+    "newrelic": "1.26.x",
+    "nf": "0.0.3",
+    "node-env-file": "^0.1.8",
+    "pm2": "^2.7.2",
+    "redis": "^2.5.0-1",
+    "request": "^2.83.0",
+    "rewiremock": "^3.4.2",
+    "router": "^1.1.4",
+    "supertest": "^3.0.0",
+    "throng": "^2.0.1",
+    "ua-parser-js": "^0.7.12"
+  }
+}
