@@ -219,8 +219,6 @@ describe('Tests for /get-proxy endpoint', () => {
       .expect(200)
       .end((err, res) => {
         let result = parseHTMLResponse(res.text);
-        //expect(result).to.eql(PROXY_FOR_AUTOIMPORTED_DOMAIN);
-        // TODO Add here static KZ proxy for autoimported domains
         expect(result).to.have.keys(['proxy']);
         done();
       });
@@ -232,14 +230,12 @@ describe('Tests for /get-proxy endpoint', () => {
       .expect(200)
       .end((err, res) => {
         let result = parseHTMLResponse(res.text);
-        // expect(result).to.eql(DEFAULT_EXPECTED_PROXY);
         expect(result).to.have.keys(['proxy']);
         request
           .get('/get-proxy?domain=www.pandora.com')
           .expect(200)
           .end((err, res) => {
             let result = parseHTMLResponse(res.text);
-            // expect(result).to.eql(DEFAULT_EXPECTED_PROXY);
             expect(result).to.have.keys(['proxy']);
             done();
           });
