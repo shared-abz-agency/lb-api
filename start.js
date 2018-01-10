@@ -120,7 +120,7 @@ function start() {
     /* eslint no-param-reassign:0 */
     res.statusCode = 404;
     res.json({
-      error: 'Method not allowed',
+      error: 'Nothing here',
     });
   });
   // start server

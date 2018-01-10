@@ -12,7 +12,7 @@
     "postinstall": "node ./crons/update.maxmind.js",
     "cron:clean": "node crons/clean.js",
     "cron:countries_clean": "node crons/clean.countries.js",
-    "test": "REDIS_URL=redis://rediscloud:M1YXNMnQVLk5hOLW@pub-redis-14084.eu-west-1-2.1.ec2.garantiadata.com:14084 mocha --require babel-core/register --timeout 30000 --exit ./tests/*"
+    "test": "mocha --require babel-core/register --timeout 30000 --exit ./tests/*"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
