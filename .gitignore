@@ -2,3 +2,4 @@ node_modules
 .idea
 .vscode
 sources/*
+.DS_Store

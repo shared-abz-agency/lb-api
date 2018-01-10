@@ -7,7 +7,7 @@ const testUids = [
   {
     uid: 201,
     data: {
-      date: new Date(2017, 10, 10).getTime(),
+      date: new Date(2016, 10, 10).getTime(),
     },
   }, // 1 day back
   {
@@ -24,38 +24,59 @@ const domain = { name: 'otto.de' };
 const key = `${ip}_${domain.name}_exceeded`;
 
 function importTestDataToRedis() {
-  let testExceedDataPromise = redisService.setValue(key, Date.now());
   return Promise.all([
     ...testUids.map(item =>
       redisService.setObject(`${item.uid}_domainRequest`, item.data)
     ),
-    testExceedDataPromise,
+    redisService.setValue(key, Date.now()),
   ]);
 }
 
 function removeTestDataFromRedis() {
-  let removeKeyPromise = redisService.deleteKey(key);
+  // let removeKeyPromise = redisService.deleteKey(key);
   return Promise.all([
     ...testUids.map(item =>
       redisService.deleteKey(`${item.uid}_domainRequest`)
     ),
     removeTestIps(),
-    removeKeyPromise,
+    redisService.deleteKey(key),
   ]);
 }
 
 function removeTestIps() {
-  const GERMAN_IP = '84.180.213.142';
-  const GERMAN_IP2 = '84.180.213.143';
-  const RANDOM_IP = '123.123.21.23';
-  return Promise.all([
-    redisService.cleanByKeyPattern(`*${GERMAN_IP}*`),
-    redisService.cleanByKeyPattern(`*${GERMAN_IP2}*`),
-    redisService.cleanByKeyPattern(`*${RANDOM_IP}*`),
-  ]);
+  const testKeys = [
+    '84.180.213.142_amazon.de_exceeded',
+    '84.180.213.142_amazon.de_requestsCount',
+    '84.180.213.143_amazon.de_requestsCount',
+    '84.180.213.143_country',
+    '123.123.21.23_amazon.de_exceeded',
+    '123.123.21.23_amazon.de_requestsCount',
+    '123.123.21.23_country',
+  ];
+  return Promise.all(testKeys.map(item => redisService.deleteKey(item)));
+}
+
+function waitForRedis(maxWaitingTime) {
+  const MAX_WAIT_TIME = maxWaitingTime || 15000;
+  let failTimeoutId;
+  return new Promise((resolve, reject) => {
+    failTimeoutId = setTimeout(reject, MAX_WAIT_TIME);
+    const check = callback => {
+      if (redisService._ready) {
+        clearTimeout(failTimeoutId);
+        resolve();
+      } else {
+        setTimeout(() => {
+          check(callback);
+        }, 500);
+      }
+    };
+    check(resolve);
+  });
 }
 
 module.exports = {
   importTestDataToRedis,
   removeTestDataFromRedis,
+  waitForRedis,
 };

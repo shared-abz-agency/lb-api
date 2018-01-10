@@ -3,6 +3,7 @@ const rewiremock = require('rewiremock');
 const {
   importTestDataToRedis,
   removeTestDataFromRedis,
+  waitForRedis,
 } = require('./import.utils');
 
 // Since API use "memored" node module,  which depends on "cluster" (master, forks) node module,
@@ -24,8 +25,6 @@ let request;
 // UID which is already stored in Redis and it should have "firstRequestDate"
 // more than postpone delivery param in defaults
 const OLD_UID = 201;
-// UID which has "firstRequetsDate" less than postpone delivery param
-const NEW_UID = 202;
 
 const GERMAN_IP = '84.180.213.142';
 const FRANCE_IP = '11.22.33.44';
@@ -52,8 +51,9 @@ const SHORT_DOMAIN_LIST_EXPECTED_RESPONSE = {
 
 describe('Tests for /domains endpoint', () => {
   before(async () => {
+    await waitForRedis();
     await removeTestDataFromRedis();
-    await importTestDataToRedis(true);
+    await importTestDataToRedis();
     server = apiInstance();
     serverInstance = server.listen();
     request = supertest.agent(serverInstance);

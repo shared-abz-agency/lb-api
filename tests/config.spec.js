@@ -1,5 +1,5 @@
 const rewiremock = require('rewiremock');
-
+const { waitForRedis } = require('./import.utils');
 // Since API use "memored" which depends on "cluster" (master, forks) node module,
 // we can't test it, so we need to mock some "memored" functions
 const apiInstance = rewiremock.default.proxy('../start', r => ({
@@ -18,6 +18,7 @@ let request;
 
 describe('Tests for /config endpoint', () => {
   before(async () => {
+    await waitForRedis();
     server = apiInstance();
     serverInstance = server.listen();
     request = supertest.agent(serverInstance);

@@ -151,7 +151,8 @@ function checkRequestCount(domain, ip, monetized) {
         // logger.log(`ip (${ip}) requested ${domain.name} ${count} times`);
         redisDataService.incrementRequestsCount(ip, domain);
         if (count === domain.maxRequests) {
-          let url = domain.url || getDefaultUrl(domain);
+          // let url = domain.url || getDefaultUrl(domain);
+          let url = getDefaultUrl(domain);
           return reject({ code: NEED_PAY, extra: url });
         }
         if (count > domain.maxRequests) {
