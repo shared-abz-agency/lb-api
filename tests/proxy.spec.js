@@ -239,7 +239,6 @@ describe('Tests for /get-proxy endpoint', () => {
             expect(result).to.have.keys(['proxy']);
             done();
           });
-        // done();
       });
   });
 });
