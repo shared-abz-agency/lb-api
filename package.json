@@ -12,7 +12,7 @@
     "postinstall": "node ./crons/update.maxmind.js",
     "cron:clean": "node crons/clean.js",
     "cron:countries_clean": "node crons/clean.countries.js",
-    "test": "mocha --require babel-core/register --timeout 30000 --exit ./tests/*"
+    "test": "mocha --require babel-core/register --timeout 30000 --exit ./tests/*spec.js"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
